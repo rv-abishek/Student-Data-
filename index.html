@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-image: url("1.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .form-container {
+            display: inline-block;
+            text-align: left;
+            border: 2px solid black;
+            padding: 2px;
+            border-radius: 10px;
+            background-color: rgba(249, 249, 249, 0.9); 
+        }
+        table.form-table td, table.form-table th {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+            border-radius: 5px;
+        }
+        input[type="text"], input[type="number"], input[type="email"], select {
+            width: 100%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        input[type="button"] {
+            background-color:#c378af;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="button"]:hover {
+            background-color: #bc8db0;
+        }
+        table.student-data {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+        table.student-data th, table.student-data td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        table.student-data th {
+            background-color: #c378af;
+            color: white;
+        }
+        table.student-data td {
+            background-color: white;
+             
+        }
+        .delete-btn {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+      
+    </style>
+</head>
+<body>
+
+<h1>Student Form</h1>
+<div class="form-container">
+    <table class="form-table">
+        <tr>
+            <th><label for="name">Name:</label></th>
+            <td><input type="text" id="name" required></td>
+        </tr>
+        <tr>
+            <th><label for="age">Age:</label></th>
+            <td><input type="number" id="age" required></td>
+        </tr>
+        <tr>
+            <th><label for="gender">Gender:</label></th>
+            <td>
+                <input type="radio" id="male" name="gender" value="Male" required>
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender" value="Female" required>
+                <label for="female">Female</label>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="course">Course:</label></th>
+            <td>
+                <select id="course" required>
+                    <option value="JavaScript">JavaScript</option>
+                    <option value="Python">Python</option>
+                    <option value="Java">Java</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="email">E-mail:</label></th>
+            <td><input type="email" id="email" required></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="button" value="Save" onclick="saveStudent()"></td>
+        </tr>
+    </table>
+</div>
+
+<h1>Student Data</h1>
+<table class="student-data">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Course</th>
+            <th>Gender</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="studentData"></tbody>
+</table>
+
+<script>
+    function saveStudent() {
+        const name = document.getElementById('name').value.trim();
+        const age = document.getElementById('age').value.trim();
+        const gender = document.querySelector('input[name="gender"]:checked')?.value;
+        const course = document.getElementById('course').value;
+        const email = document.getElementById('email').value.trim();
+        if (!name || !age || !gender || !course || !email) {
+            alert("All fields are required!");
+            return;
+        }
+        if (isNaN(age) || age <= 0 || age > 100) {
+            alert("Please enter a valid age (1-100).");
+            return;
+        }
+        const table = document.getElementById('studentData');
+        const row = table.insertRow();
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${age}</td>
+            <td>${course}</td>
+            <td>${gender}</td>
+            <td>${email}</td>
+            <td><button class="delete-btn" onclick="deleteRow(this)">Delete</button></td>
+        `;
+        document.getElementById('name').value = '';
+        document.getElementById('age').value = '';
+        document.querySelector('input[name="gender"]:checked').checked = false;
+        document.getElementById('course').value = 'JavaScript';
+        document.getElementById('email').value = '';
+    }
+    function deleteRow(button) {
+        const row = button.parentElement.parentElement;
+        row.remove();
+    }
+</script>
+
+</body>
+</html>
